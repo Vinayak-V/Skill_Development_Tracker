@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Development Tracker</title>
+    <style>
+        h1{
+            font-size: 60px;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        nav {
+            background-color: #fff;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 8px 15px;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            color: #007BFF;
+        }
+        section {
+            padding: 50px 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+        .card1 {
+            background: #001b3a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            height: 8px;
+            position: relative;
+        }
+        .progress {
+            height: 100%;
+            background-color: #007BFF;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#status">Current Status</a></li>
+            <li><a href="#add-skill">Add Skill</a></li>
+            <li><a href="#chatbot">Skill Assist</a></li>
+        </ul>
+    </nav>
+
+    <section id="home">
+        <h1>Skill Development Tracker</h1>
+        <p>Your guide to continuous learning and self-improvement.</p>
+    </section>
+
+    <section id="status">
+        <h2>Current Status</h2>
+        <div id="skill-list" class="card1"></div>
+    </section>
+
+    <section id="add-skill">
+        <h2>Add a Skill</h2>
+        <div class="card">
+            <form id="skill-form">
+                <label><input type="checkbox" value="JavaScript"> JavaScript</label>
+                <label><input type="checkbox" value="Python"> Python</label>
+                <label><input type="checkbox" value="React"> React</label>
+                <label><input type="checkbox" value="CSS"> CSS</label>
+                <button type="button" onclick="toggleSkills()">Update Skills</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="chatbot">
+        <h2>Skill Assist Chatbot</h2>
+        <a href="ai2.html" target="_blank">
+            <button type="button">Chatbot</button>
+        </a>
+    </section>
+
+    <script>
+        const subtopics = {
+            "JavaScript": ["Variables", "Functions", "DOM Manipulation", "ES6+"],
+            "Python": ["Syntax", "Loops", "Functions", "OOP"],
+            "React": ["Components", "State & Props", "Hooks", "Routing"],
+            "CSS": ["Selectors", "Flexbox", "Grid", "Animations"]
+        };
+
+        function toggleSkills() {
+            const skillList = document.getElementById("skill-list");
+            skillList.innerHTML = "";
+            document.querySelectorAll('#skill-form input[type="checkbox"]:checked').forEach(checkbox => {
+                const skill = checkbox.value;
+                const skillDiv = document.createElement("div");
+                skillDiv.classList.add("card");
+                skillDiv.innerHTML = `<p><strong>${skill}</strong></p>
+                                      <div class='progress-bar'>
+                                          <div class='progress' id='progress-${skill}'></div>
+                                      </div>`;
+                
+                const subtopicList = document.createElement("div");
+                subtopics[skill].forEach(sub => {
+                    const subLabel = document.createElement("label");
+                    subLabel.innerHTML = `<input type='checkbox' data-skill='${skill}' onclick='updateProgress("${skill}")'> ${sub}`;
+                    subtopicList.appendChild(subLabel);
+                });
+                skillDiv.appendChild(subtopicList);
+                skillList.appendChild(skillDiv);
+            });
+        }
+
+        function updateProgress(skill) {
+            let checkedSubtopics = document.querySelectorAll(`input[data-skill='${skill}']:checked`).length;
+            let totalSubtopics = subtopics[skill].length;
+            let progress = (checkedSubtopics / totalSubtopics) * 100;
+            document.getElementById(`progress-${skill}`).style.width = `${progress}%`;
+        }
+    </script>
+</body>
+</html>
